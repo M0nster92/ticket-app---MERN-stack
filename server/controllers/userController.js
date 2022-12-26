@@ -27,7 +27,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
 
   if (user) {
     res.status(201).json({
-      _id: user._id,
+      id: user._id,
       name: user.name,
       email: user.email,
       token: generateToken(user._id),
@@ -44,7 +44,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
   if (user && (await bcrypt.compare(password, user.password))) {
     res.status(200).json({
-      _id: user._id,
+      id: user._id,
       name: user.name,
       email: user.email,
       token: generateToken(user._id),
@@ -53,6 +53,14 @@ const loginUser = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("Invalid credentials");
   }
+});
+
+const getMe = asyncHandler(async (req, res) => {
+  res.status(200).json({
+    id: req.user._id,
+    name: req.user.name,
+    email: req.user.email,
+  });
 });
 
 const generateToken = (id) => {
@@ -64,4 +72,5 @@ const generateToken = (id) => {
 module.exports = {
   registerUser,
   loginUser,
+  getMe,
 };
