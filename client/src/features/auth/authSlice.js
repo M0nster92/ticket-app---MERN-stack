@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./authService";
+import { reset as ticketReset } from "../ticket/ticketSlice";
 
 const user = JSON.parse(localStorage.getItem("user"));
 
@@ -40,7 +41,8 @@ export const login = createAsyncThunk("auth/login", async (user, thunkAPI) => {
   }
 });
 
-export const logout = createAsyncThunk("auth/logout", async () => {
+export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
+  thunkAPI.dispatch(ticketReset());
   await authService.logout();
 });
 
