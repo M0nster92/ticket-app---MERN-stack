@@ -20,6 +20,16 @@ const getTicket = async (token, id) => {
   return response.data;
 };
 
+const closeTicket = async (token, id) => {
+  const config = getConfig(token);
+  const response = await axios.patch(
+    `${API_URL}${id}`,
+    { status: "closed" },
+    config
+  );
+  return response.data;
+};
+
 const getConfig = (token) => {
   return {
     headers: {
@@ -32,6 +42,7 @@ const ticketService = {
   createTicket,
   getTickets,
   getTicket,
+  closeTicket,
 };
 
 export default ticketService;

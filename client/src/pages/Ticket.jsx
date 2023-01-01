@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import BackButton from "../components/BackButton";
 import Spinner from "../components/Spinner";
-import { getTicket, reset } from "../features/ticket/ticketSlice";
+import { getTicket, reset, closeTicket } from "../features/ticket/ticketSlice";
 import { useAuthStatus } from "../hooks/useAuthStatus";
 
 function Ticket() {
@@ -34,6 +34,12 @@ function Ticket() {
     return;
   }
 
+  const onTicketClose = () => {
+    dispatch(closeTicket(id));
+    toast.success("Ticket Closed");
+    navigate("/tickets");
+  };
+
   return (
     <div className="ticket-page">
       <header className="ticket-header">
@@ -55,6 +61,12 @@ function Ticket() {
           <p>{ticket.description}</p>
         </div>
       </header>
+
+      {ticket.status !== "closed" && (
+        <button className="btn btn-block btn-danger" onClick={onTicketClose}>
+          Close
+        </button>
+      )}
     </div>
   );
 }
