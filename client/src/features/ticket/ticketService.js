@@ -14,6 +14,12 @@ const getTickets = async (token) => {
   return response.data;
 };
 
+const getTicket = async (token, id) => {
+  const config = getConfig(token);
+  const response = await axios.get(`${API_URL}/${id}`, config);
+  return response.data;
+};
+
 const getConfig = (token) => {
   return {
     headers: {
@@ -25,6 +31,7 @@ const getConfig = (token) => {
 const ticketService = {
   createTicket,
   getTickets,
+  getTicket,
 };
 
 export default ticketService;
